@@ -1,4 +1,4 @@
-name: app-build-action
+name: tv-build-action-release
 #推送Tag时触发
 on:
   push:
