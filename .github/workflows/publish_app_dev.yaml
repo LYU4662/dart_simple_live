@@ -20,19 +20,20 @@ jobs:
         with:
           ref: dev
 
-      # APK签名设置
-      - name: Download Android keystore
-        id: android_keystore
-        uses: timheuer/base64-to-file@v1.2
-        with:
-          fileName: keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
+      - name: Generate Dummy Keystore
+        run: |
+          keytool -genkey -v -keystore simple_live_tv_app/android/app/dummy.jks \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -alias "tv_alias" -keypass "123456" -storepass "123456" \
+            -dname "CN=TVApp, O=SimpleLive, C=CN"
+
+      # 2. 自动创建 key.properties 配置文件，内容写死，无需 Secrets
       - name: Create key.properties
         run: |
-          echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > simple_live_app/android/key.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD }}" >> simple_live_app/android/key.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> simple_live_app/android/key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> simple_live_app/android/key.properties
+          echo "storeFile=dummy.jks" > simple_live_tv_app/android/key.properties
+          echo "storePassword=123456" >> simple_live_tv_app/android/key.properties
+          echo "keyPassword=123456" >> simple_live_tv_app/android/key.properties
+          echo "keyAlias=tv_alias" >> simple_live_tv_app/android/key.properties
 
       # 设置JAVA环境
       - uses: actions/setup-java@v4
