@@ -78,7 +78,3 @@ jobs:
         run: echo "${{ fromJson(steps.version.outputs.content).version }}"
       - name: Echo version content
         run: echo "${{ fromJson(steps.version.outputs.content).version_desc }}"
-
-
-      #完成
-      - run: echo "🍏 This job's status is ${{ job.status }}."
