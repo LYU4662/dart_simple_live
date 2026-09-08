@@ -1,4 +1,4 @@
-name: X86-build-action
+name: x86-app-build-action
 #推送Tag时触发 / 也支持手动触发
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
       contents: write
     steps:
       # 签出代码
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: master
       # 设置Flutter环境
@@ -40,7 +40,7 @@ jobs:
 
       # 上传Windows至Artifacts
       - name: Upload Windows APP to Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: windows
           path: |
@@ -62,7 +62,7 @@ jobs:
 
       #上传至Release
       - name: Upload Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           name: "${{ steps.version.outputs.VERSION }}"
           generate_release_notes: true
